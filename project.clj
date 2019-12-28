@@ -1,4 +1,4 @@
-(defproject inst "0.1.0"
+(defproject inst "0.1.1"
   :description "Date formatter for age of events"
   :url "https://github.com/luciodale/hint"
   :license {:name "MIT"}
