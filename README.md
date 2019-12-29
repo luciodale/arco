@@ -2,8 +2,8 @@
 
 [![Clojars Project](https://img.shields.io/clojars/v/inst.svg)](https://clojars.org/inst)
 
-A multilanguage instant formatter for displaying the time that has passed since a certain event.
-In other words, the **5 minutes ago**, or **1 hour ago**, or **2 weeks ago**, or any *Time - Interval - Ago* text you see everywhere.
+A multilanguage instant formatter for displaying the time that has passed or is left **since/to** a certain event.
+In other words, the **5 minutes ago**, or **in 1 hour**, or any `Time - Interval - Ago | In - Time - Interval` text you see everywhere.
 
 ## Why Inst?
 Because you hate writing boilerplate code. With *Inst*, you call one function and pass an instant. Done. You can move on to the next ticket.
@@ -19,7 +19,7 @@ It's also worth to point out that *Inst* is side effect free and works both on y
 #### In Deps
 
 ```clojure
-inst {:mvn/version "0.1.4"}
+inst {:mvn/version "0.1.5"}
 ```
 
 or
@@ -49,17 +49,22 @@ If you want to specify a *Now* time, you can add it as second element in the vec
 (inst/time-since ["2019-12-27T11:00:20Z" "2019-12-29T11:00:20Z"])
 
 => "2 days ago"
+
+(inst/time-since ["2019-12-27T11:00:20Z" "2019-12-25T11:00:20Z"])
+
+=> "in 2 days"
 ```
 
 Keep in mind that `#inst` dates are as well accepted.
 
 ### Customizing the language
 
-To add a custom language, you can pass a map with a `:vocabulary` key and an optional `:order` key, which defaults to `[:time :interval :ago]`. In the following example, you can see how easy it is to add *Italian* support.
+To add a custom language, you can pass a map with a `:vocabulary` key and the optional `:past` and `:future` keys, which default to `[:time :interval :ago]` and `[:in :time :interval]`, respectively. In the following example, you can see how easy it is to add *Italian* support.
 
 ```clojure
 (inst/time-since ["2019-12-27T11:00:20Z"]
                  {:vocabulary {:ago "fa"
+                               :in "tra"
                                :second ["secondo" "secondi"]
                                :minute ["minuto" "minuti"]
                                :hour ["ora" "ore"]
@@ -67,14 +72,15 @@ To add a custom language, you can pass a map with a `:vocabulary` key and an opt
                                :week ["settimana" "settimane"]
                                :month ["mese" "mesi"]
                                :year ["anno" "anni"]}
-                  :order [:time :interval :ago]})
+                  :past [:time :interval :ago]
+		  :future [:in :time :interval]})
 
 => "1 giorno fa"
 ```
 
-Clearly, if you want to support many languages, you can dynamically pass the `:vocabulary` and `:order` values to respect the semantics of the language in question. Each interval key takes a vector with singular and plural form, respectively.
+Clearly, if you want to support many languages, you can dynamically pass the `:vocabulary` and `:past` `:future` values to respect the semantics of the language in question. Each interval key takes a vector with singular and plural form.
 
-If you are facing an instance where the language doesn't follow any of the `[:time :interval :ago]` permutations, you can add a `:stringify? false` key value pair to return a map containing each individual part of the final string.
+If you are facing an instance where the language doesn't follow any of the `[:time :interval :ago] [:in :time :interval]` permutations, you can add a `:stringify? false` key value pair to return a map containing each individual part of the final string.
 
 ```clojure
 (inst/time-since ["2019-12-27T11:00:20Z"]
@@ -82,6 +88,12 @@ If you are facing an instance where the language doesn't follow any of the `[:ti
                   :stringify? false})
 
 => {:time 1, :interval "giorno", :ago "fa"}
+
+(inst/time-since ["2019-12-27T11:00:20Z" "2019-12-26T11:00:20Z"]
+                 {:vocabulary {...}
+                  :stringify? false})
+
+=> {:time 1, :interval "giorno", :in "tra"}
 ```
 
 In this way, you have the chance to further parse the result yourself.
@@ -136,7 +148,3 @@ No worries! Just format the instant value before passing it to the function.
 
 => "1 hour ago"
 ```
-
-### Next features
-
-- Support future events

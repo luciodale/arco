@@ -1,4 +1,4 @@
-(defproject inst "0.1.4"
+(defproject inst "0.1.5"
   :description "Instant formatter for time since an event occurred"
   :url "https://github.com/luciodale/hint"
   :license {:name "MIT"}
