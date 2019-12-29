@@ -125,4 +125,4 @@ Let's add a new interval unit, being century.
 => "2 centuries ago"
 ```
 
-As you can see, we provide the vocabulary for the new interval, give a limit to `:year`, and add a new `:century` interval.
+As you can see, we provide the vocabulary for the new interval, reduce the default `:year` limit, and add a new `:century` interval by setting the `:limit` and `:seconds` keys.
