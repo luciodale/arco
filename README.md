@@ -60,26 +60,19 @@ To add a custom language, you can pass a map with a `:vocabulary` key and an opt
 ```clojure
 (inst/time-since ["2019-12-27T11:00:20Z"]
                  {:vocabulary {:ago "fa"
-                               :second "secondo"
-                               :seconds "secondi"
-                               :minute "minuto"
-                               :minutes "minuti"
-                               :hour "ora"
-                               :hours "ore"
-                               :day "giorno"
-                               :days "giorni"
-                               :week "settimana"
-                               :weeks "settimane"
-                               :month "mese"
-                               :months "mesi"
-                               :year "anno"
-                               :years "anni"}
+                               :second ["secondo" "secondi"]
+                               :minute ["minuto" "minuti"]
+                               :hour ["ora" "ore"]
+                               :day ["giorno" "giorni"]
+                               :week ["settimana" "settimane"]
+                               :month ["mese" "mesi"]
+                               :year ["anno" "anni"]}
                   :order [:time :interval :ago]})
 
 => "1 giorno fa"
 ```
 
-Clearly, if you want to support many languages, you can dynamically pass the `:vocabulary` and `:order` values to respect the semantics of the language in question.
+Clearly, if you want to support many languages, you can dynamically pass the `:vocabulary` and `:order` values to respect the semantics of the language in question. Each interval key takes a vector with singular and plural form, respectively.
 
 If you are facing an instance where the language doesn't follow any of the `[:time :interval :ago]` permutations, you can add a `:stringify? false` key value pair to return a map containing each individual part of the final string.
 
@@ -93,7 +86,7 @@ If you are facing an instance where the language doesn't follow any of the `[:ti
 
 In this way, you have the chance to further parse the result yourself.
 
-### Customizing the limits
+### Customizing the limit
 
 Along with `:vocabulary`, `:order`, and `:stringify?` you can pass an `:intervals` key to override the default interval limits:
 
@@ -117,3 +110,19 @@ For completeness, you can find the default values that can be overridden or exte
 ```
 
 Keep in mind that if you choose for example a `:minute` limit that goes above 86400, you will have to increase the `:hour` limit as well, as the function returns the first interval whose `:limit` value is above the event time.
+
+
+### Customize the interval
+
+Let's add a new interval unit, being century.
+
+```clojure
+(inst/time-since ["1819-12-27T11:00:20Z"]
+                 {:vocabulary {:century ["century" "centuries"]}
+                  :intervals {:year {:limit 3155692600 :seconds 31556926}
+                              :century {:limit js/Number.MAX_SAFE_INTEGER :seconds 3155692600}}})
+
+=> "2 centuries ago"
+```
+
+As you can see, we provide the vocabulary for the new interval, give a limit to `:year`, and add a new `:century` interval.
