@@ -40,13 +40,13 @@ inst {:git/url "https://github.com/luciodale/inst.git"
 ### The fastest way
 
 ```clojure
-(inst/format-time ["2019-12-27T11:00:20Z"])
+(inst/time-since ["2019-12-27T11:00:20Z"])
 ```
 
 If you want to specify a *Now* time, you can add it as second element in the vector:
 
 ```clojure
-(inst/format-time ["2019-12-27T11:00:20Z" "2019-12-29T11:00:20Z"])
+(inst/time-since ["2019-12-27T11:00:20Z" "2019-12-29T11:00:20Z"])
 
 => "2 days ago"
 ```
@@ -58,23 +58,23 @@ Keep in mind that `#inst` dates are as well accepted.
 To add a custom language, you can pass a map with a `:vocabulary` key and an optional `:order` key, which defaults to `[:time :interval :ago]`. In the following example, you can see how easy it is to add *Italian* support.
 
 ```clojure
-(inst/format-time ["2019-12-27T11:00:20Z"]
-                  {:vocabulary {:ago "fa"
-                                :second "secondo"
-                                :seconds "secondi"
-                                :minute "minuto"
-                                :minutes "minuti"
-                                :hour "ora"
-                                :hours "ore"
-                                :day "giorno"
-                                :days "giorni"
-                                :week "settimana"
-                                :weeks "settimane"
-                                :month "mese"
-                                :months "mesi"
-                                :year "anno"
-                                :years "anni"}
-                   :order [:time :interval :ago]})
+(inst/time-since ["2019-12-27T11:00:20Z"]
+                 {:vocabulary {:ago "fa"
+                               :second "secondo"
+                               :seconds "secondi"
+                               :minute "minuto"
+                               :minutes "minuti"
+                               :hour "ora"
+                               :hours "ore"
+                               :day "giorno"
+                               :days "giorni"
+                               :week "settimana"
+                               :weeks "settimane"
+                               :month "mese"
+                               :months "mesi"
+                               :year "anno"
+                               :years "anni"}
+                  :order [:time :interval :ago]})
 
 => "1 giorno fa"
 ```
@@ -84,9 +84,9 @@ Clearly, if you want to support many languages, you can dynamically pass the `:v
 If you are facing an instance where the language doesn't follow any of the `[:time :interval :ago]` permuations, you can add a `:stringify? false` key value pair to return a map containing each individual part of the final string.
 
 ```clojure
-(inst/format-time ["2019-12-27T11:00:20Z"]
-                  {:vocabulary {...}
-                   :stringify? false})
+(inst/time-since ["2019-12-27T11:00:20Z"]
+                 {:vocabulary {...}
+                  :stringify? false})
 
 => {:time 1, :interval "giorno", :ago "fa"}
 ```
@@ -98,8 +98,8 @@ In this way, you have the chance to further parse the result yourself.
 Along with `:vocabulary`, `:order`, and `:stringify?` you can pass an `:intervals` key to override the default interval limits:
 
 ```clojure
-(format-time ["2019-12-27T11:00:00Z" "2019-12-27T11:01:30Z"]
-             {:intervals {:second {:limit 160}}})
+(inst/time-since ["2019-12-27T11:00:00Z" "2019-12-27T11:01:30Z"]
+                 {:intervals {:second {:limit 160}}})
 
 => "90 seconds ago"
 ```

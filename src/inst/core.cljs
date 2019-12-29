@@ -55,7 +55,7 @@
          (string/join " "))
     data))
 
-(defn format-time
+(defn time-since
   [[t t-now] & [config]]
   (let [intervals (generate-intervals (:intervals config))
         inst-now (when t-now (t/instant t-now))
