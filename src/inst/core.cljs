@@ -42,7 +42,7 @@
       (or (first (get vocabulary time-unit))
           (name time-unit))
       (or (second (get vocabulary time-unit))
-          (str (name (first interval)) "s")))))
+          (str (name time-unit) "s")))))
 
 (defn ago-name
   [vocabulary]
