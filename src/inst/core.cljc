@@ -16,7 +16,7 @@
          :day {:limit 604800 :seconds 86400}
          :week {:limit 2629743 :seconds 604800}
          :month {:limit 31556926 :seconds 2629743}
-         :year {:limit #?(:clj (Long/MAX_VALUE)
+         :year {:limit #?(:clj Long/MAX_VALUE
                           :cljs js/Number.MAX_SAFE_INTEGER)
                 :seconds 31556926}})
        (sort-by (comp :limit second) <)))
