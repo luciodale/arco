@@ -112,7 +112,7 @@ For completeness, you can find the default values that can be overridden or exte
 Keep in mind that if you choose for example a `:minute` limit that goes above 86400, you will have to increase the `:hour` limit as well, as the function returns the first interval whose `:limit` value is above the event time.
 
 
-### Customize the interval
+### Customizing the interval
 
 Let's add a new interval unit, being century.
 
