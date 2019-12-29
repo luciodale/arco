@@ -10,8 +10,7 @@ Because you hate writing boilerplate code. With *Inst*, you call one function an
 
 Additionally, if you need more control over the output, you can pass a configuration map to customize the wording, the order, and the interval limits. It also works well with different languages such as Italian, French, Spanish, Japanese, ... and probably many others I have not tested yet :).
 
-
-Let's look at the API.
+It's also worth to point out that *Inst* is side effect free and works both on your server and browser. Let's look at the API.
 
 ## API
 
@@ -20,7 +19,7 @@ Let's look at the API.
 #### In Deps
 
 ```clojure
-inst {:mvn/version "0.1.3"}
+inst {:mvn/version "0.1.4"}
 ```
 
 or
@@ -127,3 +126,13 @@ Let's add a new interval unit, being century.
 ```
 
 As you can see, we provide the vocabulary for the new interval, reduce the default `:year` limit, and add a new `:century` interval by setting the `:limit` and `:seconds` keys.
+
+### Different Timezone?
+
+No worries! Just format the instant value before passing it to the function.
+
+```clojure
+(inst/time-since ["2019-12-29T11:00:00+01:00" "2019-12-29T11:00:00"])
+
+=> "1 hour ago"
+```

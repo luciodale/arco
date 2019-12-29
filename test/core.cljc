@@ -2,7 +2,7 @@
   (:require
    [inst.core :as inst]
    [tick.alpha.api :as t]
-   [cljs.test :refer-macros [deftest is testing run-tests]]))
+   [clojure.test :refer [deftest is testing run-tests]]))
 
 (deftest diff-in-seconds
   (testing "Event time and Now time difference in seconds"
@@ -42,7 +42,9 @@
                      [:day {:limit 604800 :seconds 86400}]
                      [:week {:limit 2629743 :seconds 604800}]
                      [:month {:limit 31556926 :seconds 2629743}]
-                     [:year {:limit js/Number.MAX_SAFE_INTEGER :seconds 31556926}]]]
+                     [:year {:limit #?(:clj (Long/MAX_VALUE)
+                                       :cljs js/Number.MAX_SAFE_INTEGER)
+                             :seconds 31556926}]]]
       (is (= [:hour {:limit 86400 :seconds 3600}] (inst/find-interval intervals 4000)))
       (is (= [:second {:limit 60 :seconds 1}] (inst/find-interval intervals 59.9)))
       (is (= [:month {:limit 31556926 :seconds 2629743}] (inst/find-interval intervals 4000000))))))
@@ -55,7 +57,9 @@
                      [:day {:limit 604800 :seconds 86400}]
                      [:week {:limit 2629743 :seconds 604800}]
                      [:month {:limit 31556926 :seconds 2629743}]
-                     [:year {:limit js/Number.MAX_SAFE_INTEGER :seconds 31556926}]]]
+                     [:year {:limit #?(:clj (Long/MAX_VALUE)
+                                       :cljs js/Number.MAX_SAFE_INTEGER)
+                             :seconds 31556926}]]]
       (is (= intervals (inst/generate-intervals {}))))
     (let [intervals (inst/generate-intervals {:hour {:limit 90000}})]
       (is (= [:hour {:limit 90000 :seconds 3600}] (nth intervals 2))))
