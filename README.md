@@ -1,4 +1,5 @@
-# Inst
+# Inst <img src="https://static.thenounproject.com/png/199376-200.png" width="30"/>
+
 [![Clojars Project](https://img.shields.io/clojars/v/inst.svg)](https://clojars.org/inst)
 
 A multilanguage instant formatter for displaying the time that has passed since a certain event.
