@@ -136,3 +136,7 @@ No worries! Just format the instant value before passing it to the function.
 
 => "1 hour ago"
 ```
+
+### Next features
+
+- Support future events
