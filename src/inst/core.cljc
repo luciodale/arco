@@ -10,7 +10,8 @@
   (->> intervals
        (merge-with
         merge
-        {:second {:limit 60 :seconds 1}
+        {:now {:limit 5 :seconds 1}
+         :second {:limit 60 :seconds 1}
          :minute {:limit 3600 :seconds 60}
          :hour {:limit 86400 :seconds 3600}
          :day {:limit 604800 :seconds 86400}
@@ -54,30 +55,33 @@
 
 (defn format-output
   [order stringify? data]
-  (let []
-    (if stringify?
-      (->> order
-           (map #(get data %))
-           (string/join " "))
-      data)))
+  (if stringify?
+    (->> order
+         (map #(get data %))
+         (string/join " "))
+    data))
 
 (defn time-since
   ([ts]
    (time-since ts {}))
   ([[t t-now] config]
-   (let [intervals (generate-intervals (:intervals config))
+   (let [vocabulary (merge {:now ["just now" "just now"]}
+                           (:vocabulary config))
+         intervals (generate-intervals (:intervals config))
          inst-now (when t-now (t/instant t-now))
          seconds-from-event (diff-in-seconds (t/instant t) (or inst-now (t/instant)))
          abs-seconds (Math/abs seconds-from-event)
          interval (find-interval intervals abs-seconds)
          time-value (time-value abs-seconds interval)
-         interval-name (interval-name (:vocabulary config) interval time-value)
+         interval-name (interval-name vocabulary interval time-value)
          past? (pos? seconds-from-event)
-         adverb-preposition-map (adverb-preposition-map (:vocabulary config) past?)]
-     (format-output (if past?
-                      (:past config [:time :interval :ago])
-                      (:future config [:in :time :interval]))
+         now? (= :now (first interval))
+         adverb-preposition-map (adverb-preposition-map vocabulary past?)]
+     (format-output (cond
+                      now? [:interval]
+                      past? (:past config [:time :interval :ago])
+                      :else (:future config [:in :time :interval]))
                     (:stringify? config true)
                     (merge {:time time-value
                             :interval interval-name}
-                           adverb-preposition-map)))))
+                           (when-not now? adverb-preposition-map))))))

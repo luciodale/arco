@@ -38,7 +38,8 @@
 
 (deftest find-interval
   (testing "Find interval based on limit value"
-    (let [intervals [[:second {:limit 60 :seconds 1}]
+    (let [intervals [[:now {:limit 5 :seconds 1}]
+                     [:second {:limit 60 :seconds 1}]
                      [:minute {:limit 3600 :seconds 60}]
                      [:hour {:limit 86400 :seconds 3600}]
                      [:day {:limit 604800 :seconds 86400}]
@@ -53,7 +54,8 @@
 
 (deftest generate-intervals
   (testing "Sorted intervals"
-    (let [intervals [[:second {:limit 60 :seconds 1}]
+    (let [intervals [[:now {:limit 5 :seconds 1}]
+                     [:second {:limit 60 :seconds 1}]
                      [:minute {:limit 3600 :seconds 60}]
                      [:hour {:limit 86400 :seconds 3600}]
                      [:day {:limit 604800 :seconds 86400}]
@@ -64,9 +66,11 @@
                              :seconds 31556926}]]]
       (is (= intervals (inst/generate-intervals {}))))
     (let [intervals (inst/generate-intervals {:hour {:limit 90000}})]
-      (is (= [:hour {:limit 90000 :seconds 3600}] (nth intervals 2))))
+      (is (= [:hour {:limit 90000 :seconds 3600}] (nth intervals 3))))
     (let [intervals (inst/generate-intervals {:second {:limit 80 :seconds 2}})]
-      (is (= [:second {:limit 80 :seconds 2}] (first intervals))))))
+      (is (= [:second {:limit 80 :seconds 2}] (second intervals))))
+    (let [intervals (inst/generate-intervals {:now {:limit 30 :seconds 1}})]
+      (is (= [:now {:limit 30 :seconds 1}] (first intervals))))))
 
 (deftest format-output
   (testing "Test different formattings"

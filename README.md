@@ -19,7 +19,7 @@ It's also worth to point out that *Inst* is side effect free and works both on y
 #### In Deps
 
 ```clojure
-inst {:mvn/version "0.1.5"}
+inst {:mvn/version "0.1.6"}
 ```
 
 or
