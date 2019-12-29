@@ -86,6 +86,9 @@
 (deftest format-time
   (testing "Test top level API"
     (is (= "2 days ago" (inst/time-since [(t/instant "2019-12-22T11:00:20Z")
+                                          (t/instant "2019-12-24T11:00:20Z")]
+                                         nil)))
+    (is (= "2 days ago" (inst/time-since [(t/instant "2019-12-22T11:00:20Z")
                                           (t/instant "2019-12-24T11:00:20Z")])))
     (is (= "2 giorni fa" (inst/time-since [(t/instant "2019-12-22T11:00:20Z")
                                            (t/instant "2019-12-24T11:00:20Z")]

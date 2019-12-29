@@ -57,16 +57,18 @@
     data))
 
 (defn time-since
-  [[t t-now] & [config]]
-  (let [intervals (generate-intervals (:intervals config))
-        inst-now (when t-now (t/instant t-now))
-        seconds-from-event (diff-in-seconds (t/instant t) (or inst-now (t/instant)))
-        interval (find-interval intervals seconds-from-event)
-        time-value (time-value seconds-from-event interval)
-        interval-name (interval-name (:vocabulary config) interval time-value)
-        ago (ago-name (:vocabulary config))]
-    (format-output (:order config [:time :interval :ago])
-                   (:stringify? config true)
-                   {:time time-value
-                    :interval interval-name
-                    :ago ago})))
+  ([ts]
+   (time-since ts {}))
+  ([[t t-now] config]
+   (let [intervals (generate-intervals (:intervals config))
+         inst-now (when t-now (t/instant t-now))
+         seconds-from-event (diff-in-seconds (t/instant t) (or inst-now (t/instant)))
+         interval (find-interval intervals seconds-from-event)
+         time-value (time-value seconds-from-event interval)
+         interval-name (interval-name (:vocabulary config) interval time-value)
+         ago (ago-name (:vocabulary config))]
+     (format-output (:order config [:time :interval :ago])
+                    (:stringify? config true)
+                    {:time time-value
+                     :interval interval-name
+                     :ago ago}))))
