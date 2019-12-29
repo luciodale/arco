@@ -81,7 +81,7 @@ To add a custom language, you can pass a map with a `:vocabulary` key and an opt
 
 Clearly, if you want to support many languages, you can dynamically pass the `:vocabulary` and `:order` values to respect the semantics of the language in question.
 
-If you are facing an instance where the language doesn't follow any of the `[:time :interval :ago]` permuations, you can add a `:stringify? false` key value pair to return a map containing each individual part of the final string.
+If you are facing an instance where the language doesn't follow any of the `[:time :interval :ago]` permutations, you can add a `:stringify? false` key value pair to return a map containing each individual part of the final string.
 
 ```clojure
 (inst/time-since ["2019-12-27T11:00:20Z"]
