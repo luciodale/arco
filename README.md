@@ -119,7 +119,7 @@ Let's add a new interval unit, being century.
 ```clojure
 (inst/time-since ["1819-12-27T11:00:20Z"]
                  {:vocabulary {:century ["century" "centuries"]}
-                  :intervals {:year {:limit 3155692600 :seconds 31556926}
+                  :intervals {:year {:limit 3155692600}
                               :century {:limit js/Number.MAX_SAFE_INTEGER :seconds 3155692600}}})
 
 => "2 centuries ago"
