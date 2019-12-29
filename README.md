@@ -112,7 +112,8 @@ Along with `:vocabulary`, `:order`, and `:stringify?` you can pass an `:interval
 For completeness, you can find the default values that can be overridden or extended in the snippet below:
 
 ```clojure
-{:second {:limit 60 :seconds 1}
+{:now {:limit 5 :seconds 1}
+ :second {:limit 60 :seconds 1}
  :minute {:limit 3600 :seconds 60}
  :hour {:limit 86400 :seconds 3600}
  :day {:limit 604800 :seconds 86400}
