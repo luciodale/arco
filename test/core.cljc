@@ -29,10 +29,12 @@
     (is (= "hours" (inst/interval-name {:hour ["hour" "hours"]} [:hour {:limit 3600 :seconds 60}] 3)))
     (is (= "days" (inst/interval-name {:hour ["hour" "hours"]} [:day {:limit 3600 :seconds 60}] 3)))))
 
-(deftest ago-name
+(deftest adverb-preposition-map
   (testing "Final ago name to be rendered"
-    (is (= "ago" (inst/ago-name {})))
-    (is (= "fa" (inst/ago-name {:ago "fa"})))))
+    (let [past? true]
+      (is (= {:ago "ago"} (inst/adverb-preposition-map {} past?)))
+      (is (= {:ago "fa"} (inst/adverb-preposition-map {:ago "fa"} past?)))
+      (is (= {:in "fra"} (inst/adverb-preposition-map {:in "fra"} false))))))
 
 (deftest find-interval
   (testing "Find interval based on limit value"
@@ -85,7 +87,19 @@
                                true
                                {:time 12
                                 :interval "seconds"
-                                :ago "ago"})))))
+                                :ago "ago"})))
+    (is (= "in 12 seconds"
+           (inst/format-output [:in :time :interval]
+                               true
+                               {:time 12
+                                :interval "seconds"
+                                :in "in"})))
+    (is (= {:time 12 :interval "secondi" :in "fra"}
+           (inst/format-output [:in :time :interval]
+                               false
+                               {:time 12
+                                :interval "secondi"
+                                :in "fra"})))))
 
 (deftest format-time
   (testing "Test top level API"
@@ -103,6 +117,10 @@
                                         {:vocabulary {:hour ["ora" "ore"]
                                                       :ago "fa"}
                                          :intervals {:hour {:limit 1209600}
-                                                     :day {:limit 2209600}}})))))
+                                                     :day {:limit 2209600}}})))
+    (is (= "tra 3 giorni" (inst/time-since [(t/instant "2019-12-23T11:00:20Z")
+                                            (t/instant "2019-12-20T11:00:20Z")]
+                                           {:vocabulary {:in "tra"
+                                                         :day ["giorno" "giorni"]}})))))
 
 ;;(run-tests)

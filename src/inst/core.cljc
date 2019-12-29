@@ -46,17 +46,20 @@
       (or (second (get vocabulary time-unit))
           (str (name time-unit) "s")))))
 
-(defn ago-name
-  [vocabulary]
-  (or (get vocabulary :ago) "ago"))
+(defn adverb-preposition-map
+  [vocabulary past?]
+  (if past?
+    {:ago (or (get vocabulary :ago) "ago")}
+    {:in (or (get vocabulary :in) "in")}))
 
 (defn format-output
   [order stringify? data]
-  (if stringify?
-    (->> order
-         (map #(get data %))
-         (string/join " "))
-    data))
+  (let []
+    (if stringify?
+      (->> order
+           (map #(get data %))
+           (string/join " "))
+      data)))
 
 (defn time-since
   ([ts]
@@ -65,12 +68,16 @@
    (let [intervals (generate-intervals (:intervals config))
          inst-now (when t-now (t/instant t-now))
          seconds-from-event (diff-in-seconds (t/instant t) (or inst-now (t/instant)))
-         interval (find-interval intervals seconds-from-event)
-         time-value (time-value seconds-from-event interval)
+         abs-seconds (Math/abs seconds-from-event)
+         interval (find-interval intervals abs-seconds)
+         time-value (time-value abs-seconds interval)
          interval-name (interval-name (:vocabulary config) interval time-value)
-         ago (ago-name (:vocabulary config))]
-     (format-output (:order config [:time :interval :ago])
+         past? (pos? seconds-from-event)
+         adverb-preposition-map (adverb-preposition-map (:vocabulary config) past?)]
+     (format-output (if past?
+                      (:past config [:time :interval :ago])
+                      (:future config [:in :time :interval]))
                     (:stringify? config true)
-                    {:time time-value
-                     :interval interval-name
-                     :ago ago}))))
+                    (merge {:time time-value
+                            :interval interval-name}
+                           adverb-preposition-map)))))
