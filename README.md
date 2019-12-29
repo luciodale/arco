@@ -19,7 +19,7 @@ Let's look at the API.
 #### In Deps
 
 ```clojure
-inst {:mvn/version "0.1.2"}
+inst {:mvn/version "0.1.3"}
 ```
 
 or
