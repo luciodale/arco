@@ -100,7 +100,7 @@ In this way, you have the chance to further parse the result yourself.
 
 ### Customizing the limit
 
-Along with `:vocabulary`, `:order`, and `:stringify?` you can pass an `:intervals` key to override the default interval limits:
+Along with `:vocabulary`, `:past`, `:future`, and `:stringify?` you can pass an `:intervals` key to override the default interval limits:
 
 ```clojure
 (inst/time-since ["2019-12-27T11:00:00Z" "2019-12-27T11:01:30Z"]
