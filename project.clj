@@ -1,5 +1,5 @@
 (defproject inst "0.1.1"
-  :description "Date formatter for age of events"
+  :description "Instant formatter for time since an event occurred"
   :url "https://github.com/luciodale/hint"
   :license {:name "MIT"}
   :source-paths ["src"]
