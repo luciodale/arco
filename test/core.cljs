@@ -72,6 +72,12 @@
                                false
                                {:time 12
                                 :interval "seconds"
+                                :ago "ago"})))
+    (is (= "seconds 12 ago"
+           (inst/format-output [:interval :time :ago]
+                               true
+                               {:time 12
+                                :interval "seconds"
                                 :ago "ago"})))))
 
 (deftest format-time

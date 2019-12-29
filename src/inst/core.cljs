@@ -48,9 +48,9 @@
   (or (get vocabulary :ago) "ago"))
 
 (defn format-output
-  [form stringify? data]
+  [order stringify? data]
   (if stringify?
-    (->> form
+    (->> order
          (map #(get data %))
          (string/join " "))
     data))
@@ -64,7 +64,7 @@
         time-value (time-value seconds-from-event interval)
         interval-name (interval-name (:vocabulary config) interval time-value)
         ago (ago-name (:vocabulary config))]
-    (format-output (:form config [:time :interval :ago])
+    (format-output (:order config [:time :interval :ago])
                    (:stringify? config true)
                    {:time time-value
                     :interval interval-name
