@@ -23,8 +23,9 @@
   (testing "Final interval name to be rendered"
     (is (= "minutes" (inst/interval-name {} [:minute {:limit 3600 :seconds 60}] 2)))
     (is (= "minute" (inst/interval-name {} [:minute {:limit 3600 :seconds 60}] 1)))
-    (is (= "minuti" (inst/interval-name {:minutes "minuti"} [:minute {:limit 3600 :seconds 60}] 2)))
-    (is (= "minuto" (inst/interval-name {:minute "minuto"} [:minute {:limit 3600 :seconds 60}] 1)))))
+    (is (= "minuti" (inst/interval-name {:minute ["minuto" "minuti"]} [:minute {:limit 3600 :seconds 60}] 2)))
+    (is (= "giorno" (inst/interval-name {:day ["giorno" "giorni"]} [:day {:limit 3600 :seconds 60}] 1)))
+    (is (= "hours" (inst/interval-name {:hour ["hour" "hours"]} [:hour {:limit 3600 :seconds 60}] 3)))))
 
 (deftest ago-name
   (testing "Final ago name to be rendered"
