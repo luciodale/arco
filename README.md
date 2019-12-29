@@ -65,6 +65,7 @@ To add a custom language, you can pass a map with a `:vocabulary` key and the op
 (inst/time-since ["2019-12-27T11:00:20Z"]
                  {:vocabulary {:ago "fa"
                                :in "tra"
+			       :now ["adesso" "adesso"]
                                :second ["secondo" "secondi"]
                                :minute ["minuto" "minuti"]
                                :hour ["ora" "ore"]
