@@ -38,12 +38,11 @@
   [vocabulary interval time-value]
   (let [one? (= time-value 1)
         time-unit (first interval)]
-    (cond
-      (and vocabulary one?) (first (get vocabulary time-unit))
-      vocabulary (second (get vocabulary time-unit))
-      ;; defaulting to english
-      one? (name (first interval))
-      :else (keyword (str (name (first interval)) "s")))))
+    (if one?
+      (or (first (get vocabulary time-unit))
+          (name time-unit))
+      (or (second (get vocabulary time-unit))
+          (str (name (first interval)) "s")))))
 
 (defn ago-name
   [vocabulary]

@@ -23,9 +23,11 @@
   (testing "Final interval name to be rendered"
     (is (= "minutes" (inst/interval-name {} [:minute {:limit 3600 :seconds 60}] 2)))
     (is (= "minute" (inst/interval-name {} [:minute {:limit 3600 :seconds 60}] 1)))
+    (is (= "days" (inst/interval-name {} [:day {:limit 3600 :seconds 60}] 2)))
     (is (= "minuti" (inst/interval-name {:minute ["minuto" "minuti"]} [:minute {:limit 3600 :seconds 60}] 2)))
     (is (= "giorno" (inst/interval-name {:day ["giorno" "giorni"]} [:day {:limit 3600 :seconds 60}] 1)))
-    (is (= "hours" (inst/interval-name {:hour ["hour" "hours"]} [:hour {:limit 3600 :seconds 60}] 3)))))
+    (is (= "hours" (inst/interval-name {:hour ["hour" "hours"]} [:hour {:limit 3600 :seconds 60}] 3)))
+    (is (= "days" (inst/interval-name {:hour ["hour" "hours"]} [:day {:limit 3600 :seconds 60}] 3)))))
 
 (deftest ago-name
   (testing "Final ago name to be rendered"
@@ -87,11 +89,11 @@
                                           (t/instant "2019-12-24T11:00:20Z")])))
     (is (= "2 giorni fa" (inst/time-since [(t/instant "2019-12-22T11:00:20Z")
                                            (t/instant "2019-12-24T11:00:20Z")]
-                                          {:vocabulary {:days "giorni"
+                                          {:vocabulary {:day ["giorno" "giorni"]
                                                         :ago "fa"}})))
     (is (= "48 ore fa" (inst/time-since [(t/instant "2019-12-22T11:00:20Z")
                                          (t/instant "2019-12-24T11:00:20Z")]
-                                        {:vocabulary {:hours "ore"
+                                        {:vocabulary {:hour ["ora" "ore"]
                                                       :ago "fa"}
                                          :intervals {:hour {:limit 1209600}
                                                      :day {:limit 2209600}}})))))
