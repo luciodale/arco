@@ -2,7 +2,7 @@
 
 [![Clojars Project](https://img.shields.io/clojars/v/inst.svg)](https://clojars.org/inst)
 
-A multilanguage instant formatter to calculate the differece between the *NOW* time and past or future events. Some examples are: **5 minutes ago**, **2 hours ago**, **in 2 weeks**, **just now**.
+A multi language instant formatter to calculate the differece between the *NOW* time and past or future events. Some examples are: **5 minutes ago**, **2 hours ago**, **in 2 weeks**, **just now**.
 
 ## Why Inst?
 Because you hate writing boilerplate code. With *Inst*, you call one function and pass an instant. Done. You can move on to the next ticket.
