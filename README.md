@@ -68,7 +68,7 @@ Keep in mind that `#inst` values are as well accepted.
 
 ### Customizing the language
 
-To add a custom language, you can pass a map with a `:vocabulary` key and an optional `:order` key, which default to `[:time :interval :ago]` and `[:in :time :interval]`, respectively. In the following example, you can see how easy it is to add *Italian* support.
+To add a custom language, you can pass a map with a `:vocabulary` key and an optional `:order` key, which defaults to `[:time :interval :ago]` for `time-since` and `[:in :time :interval]` for `time-to`. In the following example, you can see how easy it is to add *Italian* support.
 
 ```clojure
 (inst/time-since ["2019-12-27T11:00:20Z" "2019-12-28T11:00:20Z"]
