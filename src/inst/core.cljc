@@ -5,8 +5,9 @@
 
 (defn time-since
   [[t t-now] & [config]]
-  (let [vocabulary (merge inst/default-vocabulary
-                          (:vocabulary config))
+  (let [vocabulary (merge-with #(or %2 %1)
+                               inst/default-vocabulary
+                               (:vocabulary config))
         intervals (inst/generate-intervals inst/default-intervals
                                            (:intervals config))
         inst-now (when t-now (t/instant t-now))
@@ -28,8 +29,9 @@
 
 (defn time-to
   [[t t-now] & [config]]
-  (let [vocabulary (merge inst/default-vocabulary
-                          (:vocabulary config))
+  (let [vocabulary (merge-with #(or %2 %1)
+                               inst/default-vocabulary
+                               (:vocabulary config))
         intervals (inst/generate-intervals inst/default-intervals
                                            (:intervals config))
         inst-now (when t-now (t/instant t-now))
