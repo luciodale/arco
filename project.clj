@@ -1,6 +1,6 @@
-(defproject inst "0.2.1"
-  :description "Instant formatter for time since an event occurred"
-  :url "https://github.com/luciodale/hint"
+(defproject inst "0.2.2"
+  :description "Instant formatter to render time that has passed or is left since/to a certain event"
+  :url "https://github.com/luciodale/inst"
   :license {:name "MIT"}
   :source-paths ["src"]
   :profiles {:uberjar {:aot :all}}
