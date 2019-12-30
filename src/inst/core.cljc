@@ -1,87 +1,51 @@
 (ns inst.core
   (:require
-   [tick.alpha.api :as t]
-   [clojure.string :as string]))
-
-(defn generate-intervals
-  "To generate intervals in crescent order,
-  after merging any user specific default interval."
-  [intervals]
-  (->> intervals
-       (merge-with
-        merge
-        {:now {:limit 5 :seconds 1}
-         :second {:limit 60 :seconds 1}
-         :minute {:limit 3600 :seconds 60}
-         :hour {:limit 86400 :seconds 3600}
-         :day {:limit 604800 :seconds 86400}
-         :week {:limit 2629743 :seconds 604800}
-         :month {:limit 31556926 :seconds 2629743}
-         :year {:limit #?(:clj Long/MAX_VALUE
-                          :cljs js/Number.MAX_SAFE_INTEGER)
-                :seconds 31556926}})
-       (sort-by (comp :limit second) <)))
-
-(defn diff-in-seconds
-  "To convert time difference into raw seconds."
-  [time-event time-now]
-  (t/seconds (t/duration
-              {:tick/beginning time-event
-               :tick/end time-now})))
-
-(defn find-interval
-  [intervals diff-in-seconds]
-  (some #(when (> (-> % second :limit) diff-in-seconds) %) intervals))
-
-(defn time-value
-  [diff-in-seconds interval]
-  (int (Math/floor (/ diff-in-seconds (-> interval second :seconds)))))
-
-(defn interval-name
-  [vocabulary interval time-value]
-  (let [one? (= time-value 1)
-        time-unit (first interval)]
-    (if one?
-      (or (first (get vocabulary time-unit))
-          (name time-unit))
-      (or (second (get vocabulary time-unit))
-          (str (name time-unit) "s")))))
-
-(defn adverb-preposition-map
-  [vocabulary past?]
-  (if past?
-    {:ago (or (get vocabulary :ago) "ago")}
-    {:in (or (get vocabulary :in) "in")}))
-
-(defn format-output
-  [order stringify? data]
-  (if stringify?
-    (->> order
-         (map #(get data %))
-         (string/join " "))
-    data))
+   [inst.utils :as inst]
+   [tick.alpha.api :as t]))
 
 (defn time-since
-  ([ts]
-   (time-since ts {}))
-  ([[t t-now] config]
-   (let [vocabulary (merge {:now ["just now" "just now"]}
-                           (:vocabulary config))
-         intervals (generate-intervals (:intervals config))
-         inst-now (when t-now (t/instant t-now))
-         seconds-from-event (diff-in-seconds (t/instant t) (or inst-now (t/instant)))
-         abs-seconds (Math/abs seconds-from-event)
-         interval (find-interval intervals abs-seconds)
-         time-value (time-value abs-seconds interval)
-         interval-name (interval-name vocabulary interval time-value)
-         past? (pos? seconds-from-event)
-         now? (= :now (first interval))
-         adverb-preposition-map (adverb-preposition-map vocabulary past?)]
-     (format-output (cond
-                      now? [:interval]
-                      past? (:past config [:time :interval :ago])
-                      :else (:future config [:in :time :interval]))
-                    (:stringify? config true)
-                    (merge {:time time-value
-                            :interval interval-name}
-                           (when-not now? adverb-preposition-map))))))
+  [[t t-now] & [config]]
+  (let [vocabulary (merge inst/default-vocabulary
+                          (:vocabulary config))
+        intervals (inst/generate-intervals inst/default-intervals
+                                           (:intervals config))
+        inst-now (when t-now (t/instant t-now))
+        seconds-from-event (inst/diff-in-seconds (t/instant t) (or inst-now (t/instant)))
+        interval (inst/find-interval intervals seconds-from-event)
+        time-value (inst/time-value seconds-from-event interval)
+        interval-name (inst/interval-name vocabulary interval time-value)
+        now? (= :now (first interval))
+        order (if now?
+                [:interval]
+                (:order config [:time :interval :ago]))
+        ago (when-not now? {:ago (get vocabulary :ago)})]
+    (when (or (pos? seconds-from-event) (zero? seconds-from-event))
+      (inst/format-output order
+                          (:stringify? config true)
+                          (merge ago
+                                 {:time time-value
+                                  :interval interval-name})))))
+
+(defn time-to
+  [[t t-now] & [config]]
+  (let [vocabulary (merge inst/default-vocabulary
+                          (:vocabulary config))
+        intervals (inst/generate-intervals inst/default-intervals
+                                           (:intervals config))
+        inst-now (when t-now (t/instant t-now))
+        seconds-from-event (inst/diff-in-seconds (t/instant t) (or inst-now (t/instant)))
+        abs-seconds (Math/abs seconds-from-event)
+        interval (inst/find-interval intervals abs-seconds)
+        time-value (inst/time-value abs-seconds interval)
+        interval-name (inst/interval-name vocabulary interval time-value)
+        now? (= :now (first interval))
+        order (if now?
+                [:interval]
+                (:order config [:in :time :interval]))
+        in (when-not now? {:in (get vocabulary :in)})]
+    (when (or (neg? seconds-from-event) (zero? seconds-from-event))
+      (inst/format-output order
+                          (:stringify? config true)
+                          (merge in
+                                 {:time time-value
+                                  :interval interval-name})))))
