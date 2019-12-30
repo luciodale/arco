@@ -18,7 +18,7 @@ Also, this library is side effect free, which makes it 100% testable, and works 
 #### In Deps
 
 ```clojure
-inst {:mvn/version "0.2.0"}
+inst {:mvn/version "0.2.1"}
 ```
 
 or
