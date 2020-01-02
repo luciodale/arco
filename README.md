@@ -18,7 +18,7 @@ Also, this library is side effect free, which makes it 100% testable, and works 
 #### In Deps
 
 ```clojure
-arco {:mvn/version "0.2.2"}
+arco {:mvn/version "0.2.3"}
 ```
 
 or
