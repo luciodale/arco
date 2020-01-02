@@ -1,6 +1,6 @@
 # Arco <img src="https://static.thenounproject.com/png/199376-200.png" width="30"/>
 
-[![Clojars Project](https://img.shields.io/clojars/v/core.svg)](https://clojars.org/arco)
+[![Clojars Project](https://img.shields.io/clojars/v/arco.svg)](https://clojars.org/arco)
 
 A multi language instant formatter to calculate the difference between the *NOW* time and past or future events. Some examples are: **5 minutes ago**, **2 hours ago**, **in 2 weeks**, **just now**.
 
