@@ -1,4 +1,4 @@
-(ns inst.utils
+(ns arco.utils
   (:require
    [tick.alpha.api :as t]
    [clojure.string :as string]))

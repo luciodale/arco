@@ -1,6 +1,6 @@
-(ns inst.core
+(ns arco.core
   (:require
-   [inst.utils :as utils]
+   [arco.utils :as utils]
    [tick.alpha.api :as t]))
 
 (defn time-since

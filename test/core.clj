@@ -1,7 +1,7 @@
 (ns test.core
   (:require
-   [inst.utils :as utils]
-   [inst.core :as api]
+   [arco.utils :as utils]
+   [arco.core :as api]
    [tick.alpha.api :as t]
    [clojure.test :refer [deftest is testing run-tests]]))
 
@@ -66,7 +66,7 @@
             [:month {:limit 31556926 :seconds 2629743}]
             [:year {:limit Long/MAX_VALUE
                     :seconds 31556926}]]
- (utils/generate-intervals default-intervals {})))
+ (utils/generate-intervals utils/default-intervals {})))
     (let [intervals (utils/generate-intervals utils/default-intervals
                                              {:hour {:limit 90000}})]
       (is (= [:hour {:limit 90000 :seconds 3600}]

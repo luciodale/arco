@@ -1,30 +1,30 @@
-# Inst <img src="https://static.thenounproject.com/png/199376-200.png" width="30"/>
+# Arco <img src="https://static.thenounproject.com/png/199376-200.png" width="30"/>
 
-[![Clojars Project](https://img.shields.io/clojars/v/inst.svg)](https://clojars.org/inst)
+[![Clojars Project](https://img.shields.io/clojars/v/inst.svg)](https://clojars.org/arco)
 
 A multi language instant formatter to calculate the difference between the *NOW* time and past or future events. Some examples are: **5 minutes ago**, **2 hours ago**, **in 2 weeks**, **just now**.
 
-## Why Inst?
-Because you hate writing boilerplate code. With *Inst*, you call one function and pass an instant. Done. You can move on to the next ticket.
+## Why Arco? (Arc of time in Italian)
+Because you hate writing boilerplate code. With *Arco*, you call one function and pass an instant. Done. You can move on to the next ticket.
 
-Additionally, if you need more control over the output, you can pass a configuration map to customize the wording, the final strings order, and the intervals limits. *Inst* also works well with different languages such as Italian, French, Spanish, Japanese,... and probably many others I have not tested yet :).
+Additionally, if you need more control over the output, you can pass a configuration map to customize the wording, the final strings order, and the intervals limits. *Arco* also works well with different languages such as Italian, French, Spanish, Japanese,... and probably many others I have not tested yet :).
 
 Also, this library is side effect free, which makes it 100% testable, and works both on your server and browser. Let's look at the API.
 
 ## API
 
-### Require Inst
+### Require Arco
 
 #### In Deps
 
 ```clojure
-inst {:mvn/version "0.2.2"}
+arco {:mvn/version "0.2.2"}
 ```
 
 or
 
 ```clojure
-inst {:git/url "https://github.com/luciodale/inst.git"
+arco {:git/url "https://github.com/luciodale/arco.git"
       :sha "last sha commit here"}
  ```
 
@@ -33,15 +33,15 @@ inst {:git/url "https://github.com/luciodale/inst.git"
 ```clojure
 (ns your.namespace
   (:require
-   [inst.core :as inst]))
+   [arco.core :as arco]))
 ```
 
 ### The fastest way
 
 ```clojure
-(inst/time-since ["2019-12-27T11:00:20Z"])
+(arco/time-since ["2019-12-27T11:00:20Z"])
 
-(inst/time-to ["2019-12-28T11:00:20Z"])
+(arco/time-to ["2019-12-28T11:00:20Z"])
 ```
 
 If you want to specify a *NOW* time (suitable for unit testing), you can add it as second element in the vectors:
@@ -49,18 +49,18 @@ If you want to specify a *NOW* time (suitable for unit testing), you can add it 
 ```clojure
 ;; Past events
 
-(inst/time-since ["2019-12-27T11:00:20Z" "2019-12-29T11:00:20Z"])
+(arco/time-since ["2019-12-27T11:00:20Z" "2019-12-29T11:00:20Z"])
 => "2 days ago"
 
-(inst/time-since ["2019-12-29T11:00:20Z" "2019-12-27T11:00:20Z"])
+(arco/time-since ["2019-12-29T11:00:20Z" "2019-12-27T11:00:20Z"])
 => nil
 
 ;; Future events
 
-(inst/time-to ["2019-12-29T11:00:20Z" "2019-12-27T11:00:20Z"])
+(arco/time-to ["2019-12-29T11:00:20Z" "2019-12-27T11:00:20Z"])
 => "in 2 days"
 
-(inst/time-to ["2019-12-27T11:00:20Z" "2019-12-29T11:00:20Z"])
+(arco/time-to ["2019-12-27T11:00:20Z" "2019-12-29T11:00:20Z"])
 => nil
 ```
 
@@ -71,7 +71,7 @@ Keep in mind that `#inst` values are as well accepted.
 To add a custom language, you can pass a map with a `:vocabulary` key and an optional `:order` key, which defaults to `[:time :interval :ago]` for `time-since` and `[:in :time :interval]` for `time-to`. In the following example, you can see how easy it is to add *Italian* support.
 
 ```clojure
-(inst/time-since ["2019-12-27T11:00:20Z" "2019-12-28T11:00:20Z"]
+(arco/time-since ["2019-12-27T11:00:20Z" "2019-12-28T11:00:20Z"]
                  {:vocabulary {:ago "fa"
                                :now "ora"
                                :second ["secondo" "secondi"]
@@ -84,7 +84,7 @@ To add a custom language, you can pass a map with a `:vocabulary` key and an opt
                   :order [:time :interval :ago]})
 => "1 giorno fa"
 
-(inst/time-to ["2019-12-28T11:00:20Z" "2019-12-27T11:00:20Z"]
+(arco/time-to ["2019-12-28T11:00:20Z" "2019-12-27T11:00:20Z"]
               {:vocabulary {:in "tra"
                             :now "ora"
                             :second ["secondo" "secondi"]
@@ -103,11 +103,11 @@ If you need to support many languages, you can dynamically pass the `:vocabulary
 In the case you prefer to return the individual elements of the output separately, you can include a `:stringify? false` key value pair to the configuration map.
 
 ```clojure
-(inst/time-since ["2019-12-27T11:00:20Z" "2019-12-28T11:00:20Z"]
+(arco/time-since ["2019-12-27T11:00:20Z" "2019-12-28T11:00:20Z"]
                  {:stringify? false})
 => {:time 1, :interval "day", :ago "ago"}
 
-(inst/time-to [ "2019-12-28T11:00:20Z" "2019-12-27T11:00:20Z"]
+(arco/time-to [ "2019-12-28T11:00:20Z" "2019-12-27T11:00:20Z"]
               {:stringify? false})
 => {:time 1, :interval "day", :in "in"}
 ```
@@ -119,7 +119,7 @@ In this way, you have the chance to further parse the result yourself.
 Along with `:vocabulary`, `:order`, and `:stringify?` you can pass an `:intervals` key to override the default interval units:
 
 ```clojure
-(inst/time-since ["2019-12-27T11:00:00Z" "2019-12-27T11:01:30Z"]
+(arco/time-since ["2019-12-27T11:00:00Z" "2019-12-27T11:01:30Z"]
                  {:intervals {:second {:limit 160}}})
 => "90 seconds ago"
 ```
@@ -146,13 +146,13 @@ Keep in mind that if you choose for example a `:minute` limit that goes above 86
 Let's add a new interval unit, being `:century`.
 
 ```clojure
-(inst/time-since ["2019-12-27T11:00:20Z" "2219-12-27T22:00:00Z"]
+(arco/time-since ["2019-12-27T11:00:20Z" "2219-12-27T22:00:00Z"]
                  {:vocabulary {:century ["century" "centuries"]}
                   :intervals {:year {:limit 3155692600}
                               :century {:limit js/Number.MAX_SAFE_INTEGER :seconds 3155692600}}})
 => "2 centuries ago"
 
-(inst/time-to ["2219-12-27T22:00:00Z" "2019-12-27T11:00:20Z"]
+(arco/time-to ["2219-12-27T22:00:00Z" "2019-12-27T11:00:20Z"]
               {:vocabulary {:century ["century" "centuries"]}
                :intervals {:year {:limit 3155692600}
                            :century {:limit js/Number.MAX_SAFE_INTEGER :seconds 3155692600}}})
@@ -166,9 +166,9 @@ As you can see, we provide the vocabulary for the new interval, reduce the defau
 No worries! Just format the instant value before passing it to the function.
 
 ```clojure
-(inst/time-since ["2019-12-29T11:00:00+01:00" "2019-12-29T11:00:00"])
+(arco/time-since ["2019-12-29T11:00:00+01:00" "2019-12-29T11:00:00"])
 => "1 hour ago"
 
-(inst/time-to ["2019-12-29T11:00:00" "2019-12-29T11:00:00+01:00"])
+(arco/time-to ["2019-12-29T11:00:00" "2019-12-29T11:00:00+01:00"])
 => "in 1 hour"
 ```
