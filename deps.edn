@@ -1,4 +1,4 @@
 {:paths ["src"]
- :deps {tick {:mvn/version "0.4.22-alpha"}}
+ :deps {tick {:mvn/version "0.4.23-alpha"}}
  :aliases
  {:dev {:extra-paths ["test"]}}}
