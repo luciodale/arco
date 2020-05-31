@@ -18,7 +18,7 @@ Also, this library is side effect free, which makes it 100% testable, and works 
 #### In Deps
 
 ```clojure
-arco {:mvn/version "0.2.5"}
+arco {:mvn/version "0.2.8"}
 ```
 
 or
@@ -172,3 +172,22 @@ No worries! Just format the instant value before passing it to the function.
 (arco/time-to ["2019-12-29T11:00:00" "2019-12-29T11:00:00+01:00"])
 => "in 1 hour"
 ```
+
+### React component
+
+There is an `arco.react` namespace that provides a component that is re-rendered at each second. An example on how to use it follows:
+
+```clojure
+(ns your-ns
+  (:require [arco.react :as ar]))
+
+(defn main-panel
+  []
+  [:div
+   [:span "Live time passed: "]
+   [ar/time-since ["2020-05-31T00:18:38.112Z"]]])
+```
+
+Note that you can also use `[ar/time-to ...]`. The only two differences from the `core` namespace are that:
+- a custom `now` time is not accepted
+- the result will always be stringified
