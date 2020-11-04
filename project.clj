@@ -1,8 +1,8 @@
-(defproject arco "0.3.0"
+(defproject arco "0.3.1"
   :description "Instant formatter to render time that has passed or is left since/to a certain event"
   :url "https://github.com/luciodale/arco"
   :license {:name "MIT"}
-  :dependencies [[tick "0.4.11-alpha"]]
+  :dependencies []
   :source-paths ["src"]
   :profiles {:uberjar {:aot :all}}
   :deploy-repositories [["releases" :clojars]

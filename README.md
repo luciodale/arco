@@ -5,29 +5,22 @@
 A multi language instant formatter to calculate the difference between the *NOW* time and past or future events. Some examples are: **5 minutes ago**, **2 hours ago**, **in 2 weeks**, **just now**.
 
 ## Why Arco? (Arc of time in Italian)
-Because you hate writing boilerplate code. With *Arco*, you call one function and pass an instant. Done. You can move on to the next ticket.
+Most JS libraries already provide you with easy to use "time-ago" APIs. However, with *Arco*, you have much more granular control over your formatted output.
 
-Additionally, if you need more control over the output, you can pass a configuration map to customize the wording, the final strings order, and the intervals limits. *Arco* also works well with different languages such as Italian, French, Spanish, Japanese,... and probably many others I have not tested yet :).
+In fact, you can pass a configuration map to customize the wording, the final strings order, and the intervals limits. *Arco* also works well with different languages such as Italian, French, Spanish, Japanese,... and probably many others I have not tested yet :).
 
 Also, this library is side effect free, which makes it 100% testable, and works both on your server and browser. Let's look at the API.
 
 ## API
 
-### Require Arco
+### Require Arco & Tick
 
 #### In Deps
 
 ```clojure
-arco {:mvn/version "0.3.0"}
+arco {:mvn/version "0.3.1"}
+tick {:mvn/version "0.4.27-alpha"}
 ```
-
-or
-
-```clojure
-arco {:git/url "https://github.com/luciodale/arco.git"
-      :sha "last sha commit here"}
- ```
-
 #### In Namespace
 
 ```clojure
