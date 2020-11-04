@@ -18,7 +18,7 @@ Also, this library is side effect free, which makes it 100% testable, and works 
 #### In Deps
 
 ```clojure
-arco {:mvn/version "0.3.1"}
+arco {:mvn/version "0.3.2"}
 tick {:mvn/version "0.4.27-alpha"}
 ```
 #### In Namespace
@@ -67,6 +67,7 @@ To add a custom language, you can pass a map with a `:vocabulary` key and an opt
 (arco/time-since ["2019-12-27T11:00:20Z" "2019-12-28T11:00:20Z"]
                  {:vocabulary {:ago "fa"
                                :now "ora"
+							          ;; singular  plural
                                :second ["secondo" "secondi"]
                                :minute ["minuto" "minuti"]
                                :hour ["ora" "ore"]
@@ -178,13 +179,11 @@ There is an `arco.react` namespace that provides a reagent component to help wit
   []
   [:div
    [:span "Live time passed: "]
-   [ar/time-since ["2020-05-31T00:18:38.112Z"]]])
+   [ar/time-since {:times ["2020-05-31T00:18:38.112Z"]
+                   :config {:refresh-rate 2000
+				            :vocabulary ...}}
+	(fn [formatted-t]
+	 [:div "my formatted-t: " formatted-t])]])
 ```
 
 Note that `ar/time-to` and `ar/time-sice` accept a `:refresh-rate` key, which indicates the rate at which the react component is re-rendered expressed in milliseconds.
-
-In the following example, the component will re-render once every two seconds. If not specified, the `:refresh-rate` will default to 1000.
-
-```clojure
-[ar/time-since ["2020-05-31T00:18:38.112Z"] {:refresh-rate 2000}]
-```
