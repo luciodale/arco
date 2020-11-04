@@ -5,23 +5,31 @@
    [tick.alpha.api :as t]))
 
 (defn inner-component
-  "A reactful component that updates at each second."
-  [arco-fn]
-  (let [now-time (r/atom (t/now))
-        interval-instance (atom (js/setInterval #(reset! now-time (t/now)) 1000))]
+  "A reactful component that updates according to the provided refresh-rate or 1000ms"
+  [t-now refresh-rate arco-fn]
+  (let [millis-elapsed (r/atom 0)
+        interval-instance (atom (js/setInterval #(swap! millis-elapsed + refresh-rate)
+                                                refresh-rate))
+        now (or t-now (t/now))]
     (r/create-class
      {:component-will-unmount
       #(js/clearInterval @interval-instance)
       :reagent-render
       (fn []
-        [:<> (arco-fn @now-time)])})))
+        [:<> (str (arco-fn (t/+ now (t/new-duration @millis-elapsed :millis))))])})))
 
 (defn time-since
-  [[t _] & [config]]
-  [inner-component #(arco/time-since [t %]
-                                     ;; to prevent rendering an edn map
-                                     (assoc config :stringify? true))])
+  [[t t-now] & [config]]
+  (let [refresh-rate (or (:refresh-rate config) 1000)]
+    [inner-component
+     t-now
+     refresh-rate
+     #(arco/time-since [t %] config)]))
 
 (defn time-to
-  [[t _] & [config]]
-  [inner-component #(arco/time-to [t %] (assoc config :stringify? true))])
+  [[t t-now] & [config]]
+  (let [refresh-rate (or (:refresh-rate config) 1000)]
+    [inner-component
+     t-now
+     refresh-rate
+     #(arco/time-to [t %] config)]))
