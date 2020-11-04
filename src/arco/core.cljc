@@ -9,7 +9,8 @@
                                utils/default-vocabulary
                                (:vocabulary config))
         intervals (utils/generate-intervals utils/default-intervals
-                                           (:intervals config))
+                                            (:intervals config)
+                                            (:stop-at-interval config))
         inst-now (when t-now
                    (t/instant t-now))
         seconds-from-event (utils/diff-in-seconds (t/instant t)
@@ -32,10 +33,10 @@
     (when (or (pos? seconds-from-event)
               (zero? seconds-from-event))
       (utils/format-output order
-                          (:stringify? config true)
-                          (merge ago
-                                 {:time time-value
-                                  :interval interval-name})))))
+                           (:stringify? config true)
+                           (merge ago
+                                  {:time time-value
+                                   :interval interval-name})))))
 
 (defn time-to
   [[t t-now] & [config]]
@@ -43,7 +44,8 @@
                                utils/default-vocabulary
                                (:vocabulary config))
         intervals (utils/generate-intervals utils/default-intervals
-                                           (:intervals config))
+                                            (:intervals config)
+                                            (:stop-at-interval config))
         inst-now (when t-now
                    (t/instant t-now))
         seconds-from-event (utils/diff-in-seconds
@@ -68,7 +70,7 @@
     (when (or (pos? seconds-from-event)
               (zero? seconds-from-event))
       (utils/format-output order
-                          (:stringify? config true)
-                          (merge in
-                                 {:time time-value
-                                  :interval interval-name})))))
+                           (:stringify? config true)
+                           (merge in
+                                  {:time time-value
+                                   :interval interval-name})))))

@@ -66,19 +66,19 @@
             [:month {:limit 31556926 :seconds 2629743}]
             [:year {:limit Long/MAX_VALUE
                     :seconds 31556926}]]
- (utils/generate-intervals utils/default-intervals {})))
+ (utils/generate-intervals utils/default-intervals {} nil)))
     (let [intervals (utils/generate-intervals utils/default-intervals
-                                             {:hour {:limit 90000}})]
+                                              {:hour {:limit 90000}} nil)]
       (is (= [:hour {:limit 90000 :seconds 3600}]
              (nth intervals 3))))
     (let [intervals (utils/generate-intervals
                      utils/default-intervals
-                     {:second {:limit 80 :seconds 2}})]
+                     {:second {:limit 80 :seconds 2}} nil)]
       (is (= [:second {:limit 80 :seconds 2}]
              (second intervals))))
     (let [intervals (utils/generate-intervals
                      utils/default-intervals
-                     {:now {:limit 30 :seconds 1}})]
+                     {:now {:limit 30 :seconds 1}} nil)]
       (is (= [:now {:limit 30 :seconds 1}]
              (first intervals))))))
 

@@ -28,10 +28,20 @@
 (defn generate-intervals
   "To generate intervals in crescent order,
   after merging any user specific default interval."
-  [default-intervals intervals]
-  (->> intervals
-       (merge-with merge default-intervals)
-       (sort-by (comp :limit second) <)))
+  [default-intervals intervals stop-at-interval]
+  (let [merged-intervals (->> intervals
+                              (merge-with merge default-intervals))
+        stop-at-limit (:limit (get merged-intervals stop-at-interval))
+        updated-intervals (if stop-at-limit
+                            (assoc-in
+                             (into {}
+                                   (remove (fn [[_ {:keys [limit]}]]
+                                             (> limit stop-at-limit))
+                                           merged-intervals))
+                             [stop-at-interval :limit] #?(:clj Long/MAX_VALUE
+                                                          :cljs js/Number.MAX_SAFE_INTEGER))
+                            merged-intervals)]
+    (sort-by (comp :limit second) < updated-intervals)))
 
 (defn diff-in-seconds
   "To convert time difference into raw seconds."

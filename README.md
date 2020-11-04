@@ -18,7 +18,7 @@ Also, this library is side effect free, which makes it 100% testable, and works 
 #### In Deps
 
 ```clojure
-arco {:mvn/version "0.3.2"}
+arco {:mvn/version "0.3.3"}
 tick {:mvn/version "0.4.27-alpha"}
 ```
 #### In Namespace
@@ -67,7 +67,7 @@ To add a custom language, you can pass a map with a `:vocabulary` key and an opt
 (arco/time-since ["2019-12-27T11:00:20Z" "2019-12-28T11:00:20Z"]
                  {:vocabulary {:ago "fa"
                                :now "ora"
-							          ;; singular  plural
+              ;; singular  plural
                                :second ["secondo" "secondi"]
                                :minute ["minuto" "minuti"]
                                :hour ["ora" "ore"]
@@ -155,6 +155,8 @@ Let's add a new interval unit, being `:century`.
 
 As you can see, we provide the vocabulary for the new interval, reduce the default `:year` limit, and add a new `:century` interval by setting the `:limit` and `:seconds` keys.
 
+If you want to stop at a specific interval i.e. 385 seconds, you can pass a `:stop-at-interval :second` key value pair in the config to remove the uneeded intervals.
+
 ### Different Timezone?
 
 No worries! Just format the instant value before passing it to the function.
@@ -181,9 +183,9 @@ There is an `arco.react` namespace that provides a reagent component to help wit
    [:span "Live time passed: "]
    [ar/time-since {:times ["2020-05-31T00:18:38.112Z"]
                    :config {:refresh-rate 2000
-				            :vocabulary ...}}
-	(fn [formatted-t]
-	 [:div "my formatted-t: " formatted-t])]])
+                            :vocabulary ...}}
+    (fn [formatted-t]
+      [:div "my formatted-t: " formatted-t])]])
 ```
 
 Note that `ar/time-to` and `ar/time-sice` accept a `:refresh-rate` key, which indicates the rate at which the react component is re-rendered expressed in milliseconds.
