@@ -76,7 +76,6 @@
 
 (defn- -vocabulary
   [user-provided-vocabulary]
-  (prn "in voc.")
   (merge-with #(or %2 %1)
               default-vocabulary
               user-provided-vocabulary))
