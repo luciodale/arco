@@ -18,7 +18,7 @@ Also, this library is side effect free, which makes it 100% testable, and works 
 #### In Deps
 
 ```clojure
-arco {:mvn/version "0.3.3"}
+arco {:mvn/version "0.3.4"}
 tick {:mvn/version "0.4.27-alpha"}
 ```
 #### In Namespace
@@ -189,3 +189,5 @@ There is an `arco.react` namespace that provides a reagent component to help wit
 ```
 
 Note that `ar/time-to` and `ar/time-sice` accept a `:refresh-rate` key, which indicates the rate at which the react component is re-rendered expressed in milliseconds.
+
+To cache the vocabulary and intervals a `:memoize-config true` key value pair option can be added to the config map.

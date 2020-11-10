@@ -73,3 +73,29 @@
          (map #(get data %))
          (string/join " "))
     data))
+
+(defn- -vocabulary
+  [user-provided-vocabulary]
+  (prn "in voc.")
+  (merge-with #(or %2 %1)
+              default-vocabulary
+              user-provided-vocabulary))
+
+(def ^:private vocabulary (memoize -vocabulary))
+
+(defn- -intervals
+  [intervals stop-at-interval]
+  (generate-intervals default-intervals intervals stop-at-interval))
+
+(def ^:private intervals (memoize -intervals))
+
+(defn extract-config [config]
+  {:vocabulary ((if (:memoize-config config)
+                  vocabulary
+                  -vocabulary)
+                (:vocabulary config))
+   :intervals ((if (:memoize-config config)
+                 intervals
+                 -intervals)
+               (:intervals config)
+               (:stop-at-interval config))})
