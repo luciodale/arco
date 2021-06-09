@@ -6,7 +6,7 @@
 
 (defn inner-component
   "A reactful component that updates according to the provided refresh-rate or 1000ms"
-  [[_ t-now] refresh-rate arco-fn config user-component]
+  [[_ t-now] user-component refresh-rate arco-fn config]
   (let [now-fn #(or % (t/now))
         state (r/atom {:millis 0
                        :now (now-fn t-now)})
@@ -25,7 +25,7 @@
       :component-will-unmount
       #(js/clearInterval @interval-instance)
       :reagent-render
-      (fn [[t _]]
+      (fn [[t _] user-component]
         (let [{:keys [millis now]} @state]
           [user-component (arco-fn [t (t/+ now (t/new-duration millis :millis))]
                                    config)]))})))
@@ -33,11 +33,9 @@
 (defn time-since
   [{:keys [times config]} user-component]
   (let [refresh-rate (or (:refresh-rate config) 1000)]
-    [inner-component times refresh-rate arco/time-since config
-     user-component]))
+    [inner-component times user-component refresh-rate arco/time-since config]))
 
 (defn time-to
   [{:keys [times config]} user-component]
   (let [refresh-rate (or (:refresh-rate config) 1000)]
-    [inner-component times refresh-rate arco/time-to config
-     user-component]))
+    [inner-component user-component times refresh-rate arco/time-to config]))
